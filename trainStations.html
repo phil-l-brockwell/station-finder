@@ -10,7 +10,7 @@
       <div id="left">
         <h1>CHOOSE START:</h1>
         <form>
-            <select class="round" id="start" size="7">
+          <select class="round" id="start" size="7">
             <option value="1">Bond Street</option>
             <option value="2">Regents Park</option>
             <option value="3">Oxford Circus</option>
@@ -18,24 +18,24 @@
             <option value="5">Piccadilly Circus</option>
             <option value="6">Green Park</option>
             <option value="7">Leicester Square</option>
-            </select>
-		</form>
-		</div>
+          </select>
+		    </form>
+		  </div>
       
-    <div id="right">
-    	<h1>CHOOSE GOAL:</h1>  
+      <div id="right">
+    	  <h1>CHOOSE GOAL:</h1>  
         <form>
           <select class="round" id="goal" size="7">
-          <option value="1">Bond Street</option>
-          <option value="2">Regents Park</option>
-          <option value="3">Oxford Circus</option>
-          <option value="4">Tottenham Court Road</option>
-          <option value="5">Piccadilly Circus</option>
-          <option value="6">Green Park</option>
-          <option value="7">Leicester Square</option>
+            <option value="1">Bond Street</option>
+            <option value="2">Regents Park</option>
+            <option value="3">Oxford Circus</option>
+            <option value="4">Tottenham Court Road</option>
+            <option value="5">Piccadilly Circus</option>
+            <option value="6">Green Park</option>
+            <option value="7">Leicester Square</option>
           </select>
         </form>
-		</div>  
+		  </div>  
       
       <button id="button" type="Find Goal">FIND GOAL</button>
       
@@ -47,92 +47,79 @@
     
     var button = document.getElementById("button");
     
-    button.addEventListener("click", function()
-      {
+    button.addEventListener("click", function() {
         event.preventDefault();
         
         var start = parseInt(document.getElementById("start").selectedOptions[0].value);
         var goal = parseInt(document.getElementById("goal").selectedOptions[0].value);
-        
         var open = [start];
         var close = [];
-    
         var div = document.getElementById("output");
-        function appendToDiv(text)
-        {
-          div.innerHTML = div.innerHTML + '<p>' + text + '</p>';
-        }
 
-        var stations =
-        {
-          1: { name: 'Bond Street', children: [6, 3]             },
-          2: { name: 'Regents Park', children: [3]               },
-          3: { name: 'Oxford Circus', children: [6, 5, 4, 2, 1]  },
-          4: { name: 'Tottenham Court Road', children: [7, 3]    },
-          5: { name: 'Piccadilly Circus', children: [7, 6, 3]    },
-          6: { name: 'Green Park', children: [5, 3, 1]           },
-          7: { name: 'Leicester Square', children: [5, 4]        }
+        function appendToDiv(text) {
+          div.innerHTML = div.innerHTML + '<p>' + text + '</p>';
         };
+
+        var stations = { 1: { name: 'Bond Street', children: [6, 3]             },
+                         2: { name: 'Regents Park', children: [3]               },
+                         3: { name: 'Oxford Circus', children: [6, 5, 4, 2, 1]  },
+                         4: { name: 'Tottenham Court Road', children: [7, 3]    },
+                         5: { name: 'Piccadilly Circus', children: [7, 6, 3]    },
+                         6: { name: 'Green Park', children: [5, 3, 1]           },
+                         7: { name: 'Leicester Square', children: [5, 4]        }
+                       };
         
-        div.innerHTML = ""
+        div.innerHTML = "";
 
         appendToDiv('Starting at ' + (stations[start].name) + ' and looking for ' + (stations[goal].name));
-        while (open.length != 0)
-        {
+
+        while (open.length != 0) {
+
           appendToDiv('Open List:');
-          for (var i = 0; i < open.length; i++)
-          {
+          for (var i = 0; i < open.length; i++) {
             appendToDiv(stations[open[i]].name);
-          }
+          };
+
           var x = open.shift();
           appendToDiv('Check first station on the Open List:');
           appendToDiv(stations[x].name);
           appendToDiv('Is ' + stations[x].name + ' the target?');
 
-          if (x == goal)
-          {
+          if (x == goal) {
             appendToDiv('Yes');
             appendToDiv('Success!');
             break;
-          }
-          else
-          {
+          } else {
             appendToDiv('No.');
             appendToDiv('So, find its children.');
             var children = stations[x].children;
             appendToDiv('Children:');
-            for (var i = 0; i < children.length; i++)
-            {
+            for (var i = 0; i < children.length; i++) {
               appendToDiv(stations[children[i]].name);
-            }
+            };
 
             appendToDiv('Add them to the Open List; unless they are already on the Open List or the Close List.');
             appendToDiv('And add ' + stations[x].name + ' to the close list.');
             close.push(x);
             appendToDiv('Close List:');
-            for (var i = 0; i < close.length; i++)
-            {
-              appendToDiv(stations[close[i]].name)
-            }
-            for (var i = 0; i < children.length; i++)
-            {
-              if (open.indexOf(children[i]) != -1 | close.indexOf(children[i]) != -1)
-              {
+
+            for (var i = 0; i < close.length; i++) {
+              appendToDiv(stations[close[i]].name);
+            };
+            for (var i = 0; i < children.length; i++) {
+              if (open.indexOf(children[i]) != -1 | close.indexOf(children[i]) != -1) {
                 children.splice(i, 1);
                 i--;
-              }
-              else
-              {
+              } else {
                 open.unshift(children[i]);
-              }
-            }
-          }
-        }
+              };
+            };
+          };
+        };
 
-        if (x != goal && open.length == 0)
-        {
+        if (x != goal && open.length == 0) {
           appendToDiv('Failure!');
-        }
+        };
 
       })
 
